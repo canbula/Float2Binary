@@ -1,14 +1,14 @@
 import numpy as np
 
 
-def integer_to_binary(a, n=16):
+def decimal_to_binary(a, n=16):
     b = np.zeros(n, dtype=int)
-    for i in range(n-1, -1, -1):
-        x = 2**i
+    for i in range(1, n, 1):
+        x = 2**(-1*i)
         if (a - x) >= 0:
             b[i] = 1
             a -= x
-    b = b[::-1]
+    b = b[1::]
     return b
 
 
@@ -16,7 +16,7 @@ def integer_to_binary(a, n=16):
 usage example including transform the output to string
 '''
 if __name__ == "__main__":
-    x_integer = 375
-    x_binary = integer_to_binary(x_integer, 10)
+    x_decimal = 0.814
+    x_binary = decimal_to_binary(x_decimal, 10)
     x_string = np.array2string(x_binary, separator='')
-    print("%d = %s" % (x_integer, x_string[1:-1]))
+    print("%f = %s" % (x_decimal, x_string[1:-1]))
