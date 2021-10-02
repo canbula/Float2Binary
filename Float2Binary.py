@@ -39,7 +39,11 @@ class Float2Binary:
 
 
 if __name__ == "__main__":
-    f2b = Float2Binary(375.814, 12, 12)
+    f2b = Float2Binary(375.814)
     print(f2b.b_int)
     print(f2b.b_dec)
-    print(str(f2b))
+    print(f2b)
+    f2b = Float2Binary(90064.55678, 32, 32)
+    print(f2b.b_int)
+    print(f2b.b_dec)
+    print(f2b)
