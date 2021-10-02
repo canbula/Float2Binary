@@ -2,8 +2,8 @@ import numpy as np
 
 
 def decimal_to_binary(a, n=16):
-    b = np.zeros(n, dtype=int)
-    for i in range(1, n, 1):
+    b = np.zeros(n+1, dtype=int)
+    for i in range(1, n+1, 1):
         x = 2**(-1*i)
         if (a - x) >= 0:
             b[i] = 1
