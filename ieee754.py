@@ -1,20 +1,3 @@
-'''
-A python class which finds the
-IEEE 754 Floating Point Representation
-
-Single Precision (32 Bit)
-S EEEEEEEE MMMMMMMMMMMMMMMMMMMMMMM
-1 bit sign
-8 bit exponent
-23 bit mantissa
-S*(1+M)*(2**(E-127))
-
-Double Precision (64 Bit)
-S EEEEEEEEEEE MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM
-1 bit sign
-11 bit exponent
-52 bit mantissa
-'''
 import numpy as np
 
 
@@ -31,10 +14,13 @@ class IEEE754:
     def __str__(self):
         n = self.precision*32
         r = np.zeros(n, dtype=int)
+        i_d = np.append(self.i[1::], self.d)
+        print(str(self.s)
+              + np.array2string(self.e, separator='')
+              + np.array2string(i_d, separator=''))
         r[0] = self.s
-        r[1:9:] = self.e
-        r[9:9+self.i.size-1:] = self.i[1::]
-        r[9+self.i.size-1:9+self.i.size+self.d.size-1:] = self.d
+        r[1+(8 - self.e.size):9:] = self.e
+        r[32-i_d.size::] = i_d
         return np.array2string(r, separator='')
 
     @staticmethod
@@ -59,9 +45,5 @@ class IEEE754:
         return b
 
 
-a = IEEE754(11.5)
-print(a.s)
-print(a.i)
-print(a.d)
-print(a.e)
+a = IEEE754(123.51512)
 print(a)
