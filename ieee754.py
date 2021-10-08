@@ -2,25 +2,30 @@ import numpy as np
 
 
 class IEEE754:
-    def __init__(self, x, precision=1):
+    def __init__(self, x, precision=2):
         self.precision = precision
+        length_list = [16, 32, 64, 128, 256]
+        exponent_list = [5, 8, 11, 15, 19]
+        mantissa_list = [10, 23, 52, 112, 236]
+        bias_list = [15, 127, 1023, 16383, 262143]
+        self.length = length_list[precision]
+        self.exponent = exponent_list[precision]
+        self.mantissa = mantissa_list[precision]
+        self.bias = bias_list[precision]
         self.s = 0 if x >= 0 else 1
         x = abs(x)
         self.x = x
         self.i = self.integer2binary(int(x))
         self.d = self.decimal2binary(x-int(x))
-        self.e = self.integer2binary((self.i.size-1)+127)
+        self.e = self.integer2binary((self.i.size-1)+self.bias)
+        self.m = np.append(self.i[1::], self.d)
 
     def __str__(self):
-        n = self.precision*32
-        r = np.zeros(n, dtype=int)
+        r = np.zeros(self.length, dtype=int)
         i_d = np.append(self.i[1::], self.d)
-        print(str(self.s)
-              + np.array2string(self.e, separator='')
-              + np.array2string(i_d, separator=''))
         r[0] = self.s
-        r[1+(8 - self.e.size):9:] = self.e
-        r[32-i_d.size::] = i_d
+        r[1+(self.exponent - self.e.size):(self.exponent + 1):] = self.e
+        r[(1 + self.exponent):(1 + self.exponent + i_d.size):] = i_d
         return np.array2string(r, separator='')
 
     @staticmethod
@@ -35,9 +40,8 @@ class IEEE754:
 
     def decimal2binary(self, x):
         b = np.empty((0,), dtype=int)
-        n = 23 if self.precision == 1 else 52
         i = 0
-        while x > 0 and i < n:
+        while x > 0 and i < self.mantissa:
             x = x * 2
             b = np.append(b, np.array([int(x)]))
             x -= int(x)
@@ -45,5 +49,7 @@ class IEEE754:
         return b
 
 
-a = IEEE754(123.51512)
-print(a)
+if __name__ == "__main__":
+    a = IEEE754(13.375, 4)
+    s = str(a)
+    print(s)
