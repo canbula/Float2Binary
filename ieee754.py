@@ -19,6 +19,7 @@ class IEEE754:
         self.d = self.decimal2binary(x-int(x))
         self.e = self.integer2binary((self.i.size-1)+self.bias)
         self.m = np.append(self.i[1::], self.d)
+        self.h = ''
 
     def __str__(self):
         r = np.zeros(self.length, dtype=int)
@@ -26,7 +27,8 @@ class IEEE754:
         r[0] = self.s
         r[1+(self.exponent - self.e.size):(self.exponent + 1):] = self.e
         r[(1 + self.exponent):(1 + self.exponent + i_d.size):] = i_d
-        return np.array2string(r, separator='')
+        s = np.array2string(r, separator='')
+        return s[1:-1]
 
     @staticmethod
     def integer2binary(x):
@@ -48,8 +50,19 @@ class IEEE754:
             i += 1
         return b
 
+    def str2hex(self):
+        s = str(self)
+        for i in range(0, len(s), 4):
+            ss = s[i:i+4]
+            si = 0
+            for j in range(4):
+                si += int(ss[j]) * (2**(3-j))
+            sh = hex(si)
+            self.h += sh[2]
+        return self.h
+
 
 if __name__ == "__main__":
-    a = IEEE754(13.375, 4)
-    s = str(a)
-    print(s)
+    for p in range(3):
+        a = IEEE754(13.375, p)
+        print("x = %f | b = %s | h = %s" % (13.375, a, a.str2hex()))
