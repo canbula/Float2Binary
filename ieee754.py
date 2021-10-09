@@ -28,7 +28,7 @@ class IEEE754:
         r[1+(self.exponent - self.e.size):(self.exponent + 1):] = self.e
         r[(1 + self.exponent):(1 + self.exponent + i_d.size):] = i_d
         s = np.array2string(r, separator='')
-        return s[1:-1]
+        return s[1:-1].replace("\n", "").replace(" ", "")
 
     @staticmethod
     def integer2binary(x):
@@ -63,6 +63,6 @@ class IEEE754:
 
 
 if __name__ == "__main__":
-    for p in range(3):
+    for p in range(5):
         a = IEEE754(13.375, p)
         print("x = %f | b = %s | h = %s" % (13.375, a, a.str2hex()))
