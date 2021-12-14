@@ -26,7 +26,7 @@ class IEEE754:
         i_d = np.append(self.i[1::], self.d)
         r[0] = self.s
         r[1+(self.exponent - self.e.size):(self.exponent + 1):] = self.e
-        r[(1 + self.exponent):(1 + self.exponent + i_d.size):] = i_d
+        r[(1 + self.exponent):(1 + self.exponent + i_d.size):] = i_d[0:self.mantissa]
         s = np.array2string(r, separator='')
         return s[1:-1].replace("\n", "").replace(" ", "")
 
